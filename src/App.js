@@ -27,6 +27,8 @@ export function Board({ xIsNext, squares, onPlay }) {
   let status;
   if (winner) {
     status = "Winner: " + winner;
+  } else if (!squares.includes(null)) {
+    status = "No one win";
   } else {
     status = "Next player: " + (xIsNext ? "X" : "O"); 
   }
@@ -80,13 +82,24 @@ export default function Game() {
     );
   });
 
+  const [list, setList] = useState(moves);
+
+  function reverse() {
+    // const nextList = [...list];
+    // nextList.reverse();
+    // setList(nextList);
+  };
+
   return(
     <div className='game'>
       <div className='game-board'>
         <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
       </div>
       <div className='game-info'>
-        <ol>{moves}</ol>
+        <ol>
+          {moves}
+        </ol>
+        <button onClick={reverse}>Reverse</button>
       </div>
     </div>
   );
@@ -108,7 +121,7 @@ function calculateWinner(squares) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
       return squares[a];
-    }
+    } 
   }
   return null;
 }
